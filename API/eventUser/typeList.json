@@ -1,0 +1,12 @@
+{
+	"list": [
+		"Technology", "Software", "Web Development", "Desktop Development", "Mobile Development", "Game Development", "System Development", "Programming", "Cloud Technologies", "Microservices", 
+		"Personal", "Video", "Design", "Graphic Design", "Model Design", "3D Design", "Drawing", "Project Design", "UI", "UX", "System Designing", "Art", "Music", "Meeting", "Workshops", "Projects", 
+		"Parties", "Marketing", "Digital", "Media", "Photography", "Media Literacy", "Health", "Movies",  "Food", "Science", "Books", 
+		"Visiting & Travel", "Business", "Psychology", "History", "Cooking", "Sports", "Fashion & Style", "Writing", "Blog", "Economics", "Mathematics", 
+		"Philosophy", "Politics", "Finance", "Television Series", "Literature", "Education", "Education", "Journalism",
+		
+		"Python", "JavaScript", "C", "C#", "C++", "Perl", "Pascal", "Kotlin", "Dart", "Flutter", "React", "React Native", "Back end", "Front end",
+		"TypeScript", "Ruby", "Deno", "Go", "Swift", "Java", "PHP", "Node JS", "Rust", "Scala", "CSS", "R"
+	]
+}
