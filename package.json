@@ -1,7 +1,6 @@
 {
-  "name": "soruio",
+  "name": "Undefined",
   "version": "1.0.0",
-  "description": "https://api.soru.io",
   "main": "app.js",
   "engines": {
     "node": "14.0.0"
@@ -12,7 +11,7 @@
     "test": "mocha --exit --recursive --timeout 50000 ./tests/API/user/autoCompleteUsername.test.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "İbrahim Mercan",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^4.0.1",

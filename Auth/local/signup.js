@@ -13,12 +13,10 @@ const User = require('../../models/User');
 // Helpers
 const followSchemaCreate = require('../../helpers/followSchemaCreate');
 
-
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 20
 });
-
 
 router.post('/signup', limiter, async (req, res) => {
 	const [ name, email, username, password ] = [

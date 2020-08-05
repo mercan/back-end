@@ -82,8 +82,9 @@ const autoCompleteUsername = require('./API/user/autoCompleteUsername');
 const usernameSuggestion = require('./API/user/usernameSuggestion');
 const changeUser = require('./API/user/changeUser');
 const userProfile = require('./API/user/profile');
-const userBlock = require('./API/user/block');
+const userBlock = require('./API/user/userBlock');
 const userFollow = require('./API/user/follow');
+const userFollowerList = 	require('./API/user/userFollowerList');
 
 
 // API NOTIFICATIONS
@@ -118,8 +119,7 @@ app.use('/', userProfile);
 app.use('/', changeUser);
 app.use('/', userBlock);
 app.use('/', userFollow);
-
-
+app.use('/', userFollowerList);
 
 
 // NOTIFICATIONS

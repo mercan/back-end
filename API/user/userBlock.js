@@ -17,27 +17,8 @@ const limiter = rateLimit({
   headers: false
 });
 
-router.get('/get_blocks', limiter, VerifyToken, async (req, res) => {
-	const userID = req.decode.userid;
-	const { skip = 0 } = req.query;
-			
-	const user = await User.findOne({ _id: userID }, '_id');
-
-	if (!user) {
-		return res.status(401).json({ code: 400, message: 'Can\'t find user' });
-	}
-
-	const blockList = await Block.findOne({ userID }, {
-		blocks: { $slice: [Number(skip), 10] }
-	});
-
-	return res.status(200).json({ code: 200, blocks: blockList.blocks ?? [] });
-});
-
-
 router.post('/add_block', limiter, VerifyToken, async (req, res) => {
 	const { userID, showQuestions = false, infoMessage = '' } = req.body;
-
 
 	if (!userID || !mongoose.Types.ObjectId.isValid(userID)) {
 		return res.status(400).json({
@@ -54,7 +35,7 @@ router.post('/add_block', limiter, VerifyToken, async (req, res) => {
 
 	if (req.decode.userid.toString() === userID.toString()) {
 		return res.status(400).json({	 
-			code: '4044block',
+			code: 400,
 			message: 'You can\'t block yourself'
 		});
 	}
@@ -82,7 +63,7 @@ router.post('/add_block', limiter, VerifyToken, async (req, res) => {
 	for (let user of currentUser.blocks) {
 		if (user.userID.toString() === userID.toString()) {
 			return res.status(400).json({ 
-				code: '4000block', 
+				code: 400, 
 				message: 'User previously blocked' 
 			});
 		}
@@ -111,7 +92,6 @@ router.post('/add_block', limiter, VerifyToken, async (req, res) => {
 
 	return res.status(400).json({ code: -1, message: 'Unknown error occurred' });
 });
-
 
 router.post('/delete_block', limiter, VerifyToken, async (req, res) => {
 	const { unBlockUserID } = req.body;
@@ -144,11 +124,27 @@ router.post('/delete_block', limiter, VerifyToken, async (req, res) => {
 
 	return res.status(400).json(
 		{ 
-			code: '4004block',
+			code: 400,
 			message: 'No blocked user found' 
 		}
 	);
 	
 });
 
+router.get('/get_blocks', limiter, VerifyToken, async (req, res) => {
+	const userID = req.decode.userid;
+	const { skip = 0 } = req.query;
+			
+	const user = await User.findOne({ _id: userID }, '_id');
+
+	if (!user) {
+		return res.status(401).json({ code: 400, message: 'Can\'t find user' });
+	}
+
+	const blockList = await Block.findOne({ userID }, {
+		blocks: { $slice: [Number(skip), 10] }
+	});
+
+	return res.status(200).json({ code: 200, blocks: blockList.blocks ?? [] });
+});
 module.exports = router;

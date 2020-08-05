@@ -423,7 +423,7 @@ fetch('http://localhost:3000/add_join_event', {
 */
 
 
-
+/*
 fetch('http://localhost:3000/user_profile_info', {
 	method: 'POST',
 	headers: {
@@ -443,7 +443,7 @@ fetch('http://localhost:3000/user_profile_info', {
 	// Data içinde ki code sorgulanıcak öyle işlem yapılacak.
 	console.log(data);
 });
-
+*/
 
 
 /*
@@ -687,7 +687,7 @@ fetch('http://localhost:3000/add_block', {
 		'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI1ZjBiOTg0NjQ4NTkwODE2ZGNkYTY4MzUiLCJuYW1lIjoixLBicmFoaW0gTWVyY2FuIiwicGljdHVyZSI6Imh0dHBzOi8vd3d3LmJvb2tzaWUuY29tL2ZpbGVzL3Byb2ZpbGVzLzIyL21yLWFub255bW91cy5wbmciLCJpYXQiOjE1OTQ1OTUzOTksImV4cCI6MTU5NzE4NzM5OX0.otV_dFkJiQjPJ6P16CUahcs3cuIc9RYJmZhlEfeXluU'
 	},
 	body: JSON.stringify({
-		userID: '5f0ba3ae1ae0b6001748973d',
+		userID: '5f0ba3c71ae0b60017489740',
 		// showQuestions: false, // default: false
 		// infoMessage: 'Deneme Deneme' // default: undefined
 	})
@@ -712,7 +712,7 @@ fetch('http://localhost:3000/delete_block', {
 		'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI1ZjBiOTg0NjQ4NTkwODE2ZGNkYTY4MzUiLCJuYW1lIjoixLBicmFoaW0gTWVyY2FuIiwicGljdHVyZSI6Imh0dHBzOi8vd3d3LmJvb2tzaWUuY29tL2ZpbGVzL3Byb2ZpbGVzLzIyL21yLWFub255bW91cy5wbmciLCJpYXQiOjE1OTQ1OTUzOTksImV4cCI6MTU5NzE4NzM5OX0.otV_dFkJiQjPJ6P16CUahcs3cuIc9RYJmZhlEfeXluU'
 	},
 	body: JSON.stringify({
-		unBlockUserID: '5f0ba3ae1ae0b6001748973d'
+		unBlockUserID: '5f0ba3c71ae0b60017489740'
 	})
 }).then(async res => {
 	if (res.status === 429) {
@@ -749,3 +749,22 @@ fetch('http://localhost:3000/follow', {
 	console.log(data);
 });
 */
+
+
+
+fetch('http://localhost:3000/user_follow_list?username=Mercan', {
+	method: 'GET',
+	headers: {
+		'Content-Type': 'application/json; charset=utf-8',
+		'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI1ZjBiYTNjNzFhZTBiNjAwMTc0ODk3NDAiLCJuYW1lIjoixLBicmFoaW0gTWVyY2FuIiwicGljdHVyZSI6Imh0dHBzOi8vc2NvbnRlbnQtaWFkMy0xLnh4LmZiY2RuLm5ldC92L3QxLjMwNDk3LTEvY3AwL2MxNS4wLjUwLjUwYS9wNTB4NTAvODQ2MjgyNzNfMTc2MTU5ODMwMjc3ODU2Xzk3MjY5MzM2MzkyMjgyOTMxMl9uLmpwZz9fbmNfY2F0PTEmX25jX3NpZD0xMmIzYmUmX25jX29oYz1PTzBCUmxVMExzY0FYX1JMRHNUJl9uY19odD1zY29udGVudC1pYWQzLTEueHgmb2g9NWNmNTViZTBjNmFkY2IzODI5Mzg2N2RlMDgwZjg1NzEmb2U9NUYzMjFFMzgiLCJpYXQiOjE1OTQ1OTgzNDMsImV4cCI6MTU5NzE5MDM0M30.Ej-_cLaUIN5__m0dW1DZhh3Go6Rwwu6GH4tpPYwtxYY'
+	}
+}).then(async res => {
+	if (res.status === 429) {
+		// Ekrana hata basılacak
+		return console.log(res.status, res.statusText);
+	}
+
+	const data = await res.json();
+	// Data içinde ki code sorgulanıcak öyle işlem yapılacak.
+	console.log(data);
+});

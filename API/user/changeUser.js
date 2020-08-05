@@ -1,8 +1,13 @@
+// Token
 const VerifyToken = require('../../middleware/api-verify-token');
-const rateLimit 	= require('express-rate-limit');
-const User      	= require('../../models/User');
-const router    	= require('express').Router();
-const bcrypt    	= require('bcrypt');
+
+// Package
+const rateLimit = require('express-rate-limit');
+const router = require('express').Router();
+const bcrypt = require('bcrypt');
+
+// Models
+const User = require('../../models/User');
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
