@@ -31,7 +31,7 @@ const newUser = new Schema({
 		appleId: 	 String,
 		showAccounts: []
 	},
-
+/*
 	location: {
 		city: 			 { type: String, required: true },
 		countryName: { type: String, required: true },
@@ -39,7 +39,7 @@ const newUser = new Schema({
 		timezone: 	 { type: String, required: true },
 		currency: 	 { type: String, required: true }
 	},
-
+*/
 	profile: {
 		showProfile: { type: Boolean, default: true },
 	},

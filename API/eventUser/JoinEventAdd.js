@@ -1,9 +1,13 @@
+// Token
 const VerifyToken = require('../../middleware/api-verify-token');
-const JoinEvent = require('../../models/JoinEvent');
-const Event  = require('../../models/Event');
-const User   = require('../../models/User');
+
+// Package
 const router = require('express').Router();
 
+// Models
+const JoinEvent = require('../../models/JoinEvent');
+const Event = require('../../models/Event');
+const User = require('../../models/User');
 
 const eventJoinedEvent = async eventCode => {
 	const joinEventUpdate = await Event.updateOne({ eventCode }, {

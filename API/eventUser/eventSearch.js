@@ -1,6 +1,9 @@
+// Package
 const rateLimit = require('express-rate-limit');
-const Event  		= require('../../models/Event');
-const router 		= require('express').Router();
+const router = require('express').Router();
+
+// Models
+const Event = require('../../models/Event');
 
 const limiter = rateLimit({
   windowMs: 3 * 60 * 1000,

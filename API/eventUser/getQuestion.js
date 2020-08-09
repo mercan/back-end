@@ -1,13 +1,14 @@
+// Token
 const tokenCheck = require('../../middleware/verify-token-func');
 
 // Package
 const rateLimit = require('express-rate-limit');
-const router 		= require('express').Router();
+const router = require('express').Router();
 
 // Models
 const Block	= require('../../models/Blocks');
 const Event = require('../../models/Event');
-const Like  = require('../../models/Like');
+const Like = require('../../models/Like');
 
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000,

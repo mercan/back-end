@@ -14,7 +14,7 @@ passport.use(new FacebookStrategy ({
 		const currentUser = await User.findOne({ connect: 'Facebook', socialID: profile.id });
 		
 		if (currentUser) {
-			return done(null, currentUser);
+			return done(null, { user: currentUser, currentUser: true });
 		}
 		
 		const newUser = new User({

@@ -1,7 +1,13 @@
+// Token
 const VerifyToken = require('../../middleware/api-verify-token');
-const Event       = require('../../models/Event');
-const router      = require('express').Router();
-const mongoose    = require('mongoose');
+
+// Package
+const router = require('express').Router();
+const mongoose = require('mongoose');
+
+// Models
+const Event = require('../../models/Event');
+
 
 router.post('/event-banned-delete', VerifyToken, async (req, res) => {
 	const { eventCode, userID } = req.body;

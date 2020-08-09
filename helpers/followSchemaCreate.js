@@ -1,13 +1,5 @@
 const Follow = require('../models/Follow');
 
-const followSchemaCreate = async function(userID) {
-	const newFollow = new Follow({
-		userID
-	});
-
-	const newFollowSave = await newFollow.save();
-
-	return true;
-}
+const followSchemaCreate = userID => new Follow({ userID }).save();
 
 module.exports = followSchemaCreate;

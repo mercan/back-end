@@ -1,8 +1,12 @@
+// Token
 const VerifyToken = require('../../middleware/api-verify-token');
-const Event       = require('../../models/Event');
-const router      = require('express').Router();
-const mongoose    = require('mongoose');
 
+// Package
+const router = require('express').Router();
+const mongoose = require('mongoose');
+
+// Models
+const Event = require('../../models/Event');
 
 router.post('/creator-delete-question', VerifyToken, async (req, res) => {
 	const { questionID } = req.body;

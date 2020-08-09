@@ -1,13 +1,13 @@
 // Token
-const VerifyToken  = require('../../middleware/api-verify-token');
+const VerifyToken = require('../../middleware/api-verify-token');
 
 // Package
 const router = require('express').Router();
 
 // Models
 const Notification = require('../../models/Notification');
-const Event  			 = require('../../models/Event');
-const User   			 = require('../../models/User');
+const Event = require('../../models/Event');
+const User = require('../../models/User');
 
 
 router.post('/notification-add', VerifyToken, async (req, res) => {

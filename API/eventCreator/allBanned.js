@@ -1,9 +1,13 @@
+// Token
 const VerifyToken = require('../../middleware/api-verify-token');
-const Event       = require('../../models/Event');
-const User        = require('../../models/User');
-const router      = require('express').Router();
-const mongoose    = require('mongoose');
 
+// Package
+const router = require('express').Router();
+const mongoose = require('mongoose');
+
+// Models
+const Event = require('../../models/Event');
+const User = require('../../models/User');
 
 router.post('/all-banned-add', VerifyToken, async (req, res) => {
 	const { userID, questionID } = req.body;

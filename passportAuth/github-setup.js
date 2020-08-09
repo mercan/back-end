@@ -15,7 +15,7 @@ passport.use(new GitHubStrategy ({
 		const currentUser = await User.findOne({ connect: 'Github', socialID: profile.id });
 		
 		if (currentUser) {
-			return done(null, currentUser);
+			return done(null, { user: currentUser, currentUser: true });
 		}
 		
 		const newUser = new User({

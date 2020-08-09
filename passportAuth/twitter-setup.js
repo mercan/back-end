@@ -14,7 +14,7 @@ passport.use(new TwitterStrategy({
 		const currentUser = await User.findOne({ connect: 'Twitter', socialID: profile.id });
 		
 		if (currentUser) {
-			return done(null, currentUser);
+			return done(null, { user: currentUser, currentUser: true });
 		}
 
 		const newUser = new User({

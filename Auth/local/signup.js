@@ -6,12 +6,16 @@ const rateLimit = require('express-rate-limit');
 const router = require('express').Router();
 const fetch  = require('node-fetch');
 const bcrypt = require('bcrypt');
+const amqp = require('amqplib');
 
 // Models
 const User = require('../../models/User');
 
 // Helpers
 const followSchemaCreate = require('../../helpers/followSchemaCreate');
+
+// New Account Email Publisher RabbitMQ
+const sendEmailPublisher = require('../../services/publisherSendEmailNewAccount');
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -24,7 +28,7 @@ router.post('/signup', limiter, async (req, res) => {
 		req.body.name ? req.body.name.trim() : false,
 		req.body.email ? req.body.email.trim() : false,
 		req.body.username ? req.body.username.trim() : false,
-		req.body.password
+		req.body.password,
 	];
 	
 	const ipAddress = req.headers['x-forwarded-for'] || 
@@ -82,12 +86,17 @@ router.post('/signup', limiter, async (req, res) => {
 		if (saveUser) {
 			await followSchemaCreate(newUser._id);
 
-			return res.status(200).json(
-				{ code: 200, 
-					token: tokenCreate(newUser._id, newUser.name, newUser.picture)
-					
-				}
-			);
+			const userInfo = {
+				email: newUser.email,
+				name: newUser.name,
+			}
+			
+			sendEmailPublisher(userInfo);
+
+			return res.status(200).json({
+				code: 200, 
+				token: tokenCreate(newUser._id, newUser.name, newUser.picture)			
+			});
 		}
 
 		res.status(400).json({ code: 304 });

@@ -13,7 +13,7 @@ passport.use(new GoogleStrategy({
 		const currentUser = await User.findOne({ connect: 'Google', socialID: profile.id });
 		
 		if (currentUser) {
-			return done(null, currentUser);
+			return done(null, { user: currentUser, currentUser: true });
 		}
 		
 		const newUser = new User({
