@@ -137,18 +137,17 @@ fetch('http://localhost:3000/like-question-anonymous', {
 });
 */
 
-
-
+/*
 fetch('http://localhost:3000/signup', {
 	method: 'POST',
 	headers: {
 		'Content-Type': 'application/json; charset=utf-8'
 	},
 	body: JSON.stringify({
-		username: 'Admin-Adm',
+		username: 'Mercan',
 		name: 'İbrahim Can Mercan',
 		email: 'ultuma00@gmail.com',
-		password: 'admin123456'
+		password: 'mercan123456'
 	})
 }).then(async res => {
 	if (res.status === 429) {
@@ -160,8 +159,7 @@ fetch('http://localhost:3000/signup', {
 	// Data içinde ki code sorgulanıcak öyle işlem yapılacak.
 	console.log(data);
 });
-
-
+*/
 
 /*
 fetch('http://localhost:3000/login', {
@@ -186,8 +184,6 @@ fetch('http://localhost:3000/login', {
 });
 */
 
-
-
 /*
 fetch('http://localhost:3000/creator-delete-question', {
 	method: 'POST',
@@ -209,7 +205,6 @@ fetch('http://localhost:3000/creator-delete-question', {
 	console.log(data);
 });
 */
-
 
 /*
 fetch('http://localhost:3000/user-delete-question', {
@@ -233,7 +228,6 @@ fetch('http://localhost:3000/user-delete-question', {
 });
 */
 
-
 /*
 fetch('http://localhost:3000/anonymous-delete-question', {
 	method: 'POST',
@@ -254,7 +248,6 @@ fetch('http://localhost:3000/anonymous-delete-question', {
 	console.log(data);
 });
 */
-
 
 /*
 fetch('http://localhost:3000/feature-update-q?question=true&reply=false&loginQuestion=true&questionLimit=1', {
@@ -278,7 +271,6 @@ fetch('http://localhost:3000/feature-update-q?question=true&reply=false&loginQue
 	console.log(data);
 });
 */
-
 
 /*
 fetch('http://localhost:3000/event-banned-add', {
@@ -304,7 +296,6 @@ fetch('http://localhost:3000/event-banned-add', {
 });
 */
 
-
 /*
 fetch('http://localhost:3000/all-banned-add', {
 	method: 'POST',
@@ -328,7 +319,6 @@ fetch('http://localhost:3000/all-banned-add', {
 });
 */
 
-
 /*
 fetch('http://localhost:3000/change_name', {
 	method: 'POST',
@@ -351,7 +341,6 @@ fetch('http://localhost:3000/change_name', {
 });
 */
 
-
 /*
 fetch('http://localhost:3000/change_email', {
 	method: 'POST',
@@ -373,7 +362,6 @@ fetch('http://localhost:3000/change_email', {
 	console.log(data);
 });
 */
-
 
 /*
 fetch('http://localhost:3000/change_password', {
@@ -398,7 +386,6 @@ fetch('http://localhost:3000/change_password', {
 });
 */
 
-
 /*
 fetch('http://localhost:3000/add_join_event', {
 	method: 'POST',
@@ -422,7 +409,6 @@ fetch('http://localhost:3000/add_join_event', {
 });
 */
 
-
 /*
 fetch('http://localhost:3000/user_profile_info', {
 	method: 'POST',
@@ -445,7 +431,6 @@ fetch('http://localhost:3000/user_profile_info', {
 });
 */
 
-
 /*
 fetch('http://localhost:3000/token-verify', {
 	method: 'GET',
@@ -465,7 +450,6 @@ fetch('http://localhost:3000/token-verify', {
 });
 */
 
-
 /*
 fetch('https://soruio.herokuapp.com/logout', {
 	method: 'GET',
@@ -484,7 +468,6 @@ fetch('https://soruio.herokuapp.com/logout', {
 });
 */
 
-
 /*
 fetch('http://localhost:3000/all-events', {
 	method: 'GET',
@@ -502,7 +485,6 @@ fetch('http://localhost:3000/all-events', {
 	console.log(data);
 });
 */
-
 
 /*
 fetch('http://localhost:3000/event-banned-delete', {
@@ -527,7 +509,6 @@ fetch('http://localhost:3000/event-banned-delete', {
 });
 */
 
-
 /*
 fetch('http://localhost:3000/username-suggestion', {
 	method: 'POST',
@@ -546,7 +527,6 @@ fetch('http://localhost:3000/username-suggestion', {
 	console.log(data);
 });
 */
-
 
 /*
 fetch('http://localhost:3000/change_username', {
@@ -570,7 +550,6 @@ fetch('http://localhost:3000/change_username', {
 });
 */
 
-
 /*
 fetch('http://localhost:3000/notification-add', {
 	method: 'POST',
@@ -592,7 +571,6 @@ fetch('http://localhost:3000/notification-add', {
 	console.log(data);
 });
 */
-
 
 /*
 fetch('http://localhost:3000/notification-delete', {
@@ -618,7 +596,6 @@ fetch('http://localhost:3000/notification-delete', {
 });
 */
 
-
 /*
 fetch('http://localhost:3000/username-search?username=M', {
 	method: 'GET',
@@ -636,7 +613,6 @@ fetch('http://localhost:3000/username-search?username=M', {
 	console.log(data);
 });
 */
-
 
 /*
 fetch('http://localhost:3000/event-search?eventCode=D695V63C', {
@@ -658,7 +634,6 @@ fetch('http://localhost:3000/event-search?eventCode=D695V63C', {
 });
 */
 
-
 /*
 fetch('http://localhost:3000/get_blocks?skip=0', {
 	method: 'GET',
@@ -677,7 +652,6 @@ fetch('http://localhost:3000/get_blocks?skip=0', {
 	console.log(data);
 });
 */
-
 
 /*
 fetch('http://localhost:3000/add_block', {
@@ -703,7 +677,6 @@ fetch('http://localhost:3000/add_block', {
 });
 */
 
-
 /*
 fetch('http://localhost:3000/delete_block', {
 	method: 'POST',
@@ -725,7 +698,6 @@ fetch('http://localhost:3000/delete_block', {
 	console.log(data);
 });
 */
-
 
 /*
 fetch('http://localhost:3000/follow', {
@@ -750,7 +722,6 @@ fetch('http://localhost:3000/follow', {
 });
 */
 
-
 /*
 fetch('http://localhost:3000/user_follow_list?username=Mercan', {
 	method: 'GET',
@@ -769,3 +740,61 @@ fetch('http://localhost:3000/user_follow_list?username=Mercan', {
 	console.log(data);
 });
 */
+
+/*
+fetch('http://localhost:3000/reset_password?username=Mercan', {
+	method: 'GET',
+	headers: {
+		'Content-Type': 'application/json; charset=utf-8',
+	}
+}).then(async res => {
+	if (res.status === 429) {
+		// Ekrana hata basılacak
+		return console.log(res.status, res.statusText);
+	}
+
+	const data = await res.json();
+	// Data içinde ki code sorgulanıcak öyle işlem yapılacak.
+	console.log(data);
+});
+*/
+
+/*
+fetch('http://localhost:3000/reset_password_verify?code=JBM0S3&username=Mercan', { // email=ultuma00@gmail.com
+	method: 'GET',
+	headers: {
+		'Content-Type': 'application/json; charset=utf-8',
+	}
+}).then(async res => {
+	if (res.status === 429) {
+		// Ekrana hata basılacak
+		return console.log(res.status, res.statusText);
+	}
+
+	const data = await res.json();
+	// Data içinde ki code sorgulanıcak öyle işlem yapılacak.
+	console.log(data);
+});
+*/
+
+// $2b$10$KUk9D41mMYX7B6b6bTu5o.U7EUvGVcsxidbl6JeWNAW06n29nsDXS
+fetch('http://localhost:3000/reset_password_change', {
+	method: 'POST',
+	headers: {
+		'Content-Type': 'application/json; charset=utf-8',
+	},
+	body: JSON.stringify({
+		code: "JBM0S3",
+		username: "Mercan",
+		password: "123456789"
+	})
+}).then(async res => {
+	if (res.status === 429) {
+		// Ekrana hata basılacak
+		return console.log(res.status, res.statusText);
+	}
+
+	const data = await res.json();
+	// Data içinde ki code sorgulanıcak öyle işlem yapılacak.
+	console.log(data);
+});

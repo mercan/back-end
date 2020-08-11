@@ -1,5 +1,6 @@
 const sgMail = require('@sendgrid/mail');
 const amqp = require('amqplib');
+const fs = require('fs');
 
 sgMail.setApiKey("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");
 
@@ -9,21 +10,19 @@ async function connectRabbitMQ() {
 	try {
 		const connection = await amqp.connect("amqp://localhost:5672");
 		const channel = await connection.createChannel();
-		const assertion = await channel.assertQueue("newAccountSendEmail");
+		const assertion = await channel.assertQueue("resetPassword");
 
 		console.log("Email Gönderimi İçin Bekliyor...");
 
 		// Mesajın Alınması...
-		channel.consume("newAccountSendEmail", async data => {
+		channel.consume("resetPassword", async data => {
 			const user = JSON.parse(data.content.toString());
 			const msg = {
 				to: `${user.email}`,
 				from: 'mrcnn77@gmail.com',
-			  subject: `Hoşgeldin ${user.name}`,
-			 	text: `
-			 	${user.name} Hoşgeldin! \n\n
-			 	Username: ${user.username}
-			 	`,
+			  subject: `Uygulama Adı Parola Sıfırlama`,
+			 	text: `Parola Sıfırlama Kodu: ${user.resetCode}
+			 	Kod 1 Saat geçerlidir.`,
 			 	//html: '<strong>and easy to do anywhere, even with Node.js</strong>',
 			}
 
@@ -31,12 +30,21 @@ async function connectRabbitMQ() {
 
 			if (sendEmail[0].statusCode === 202) {
 				channel.ack(data);
-				console.log(`Mail Gönderildi : ${new Date()} - ${user.email} - ${user.name}`);
+				const log = `Email: ${user.email} - Date: ${new Date()} - Gönderildi\n`;
+				
+				fs.appendFile('resetPasswordLog.txt', log, 'utf8', err => {
+				  if (err) throw err;
+				});
 				return;
 			}
-			
+
 			channel.nack(data);
-			console.log(`Mail Gönderilemedi : ${new Date()} - ${user.email} - ${user.name}`);
+			const log = `Email: ${user.email} - Date: ${new Date()} - Gönderilemedi\n`;			
+			
+			fs.appendFile('resetPasswordLog.txt', log, 'utf8', err => {
+				if (err) throw err;
+			});
+
 		});
 
 	} catch (error) {

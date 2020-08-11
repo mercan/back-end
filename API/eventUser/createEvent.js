@@ -7,8 +7,8 @@ const typeList = require('./typeList').list;
 const router = require('express').Router();
 
 // Models
-const Event  			= require('../../models/Event');
-const User   			= require('../../models/User');
+const Event = require('../../models/Event');
+const User = require('../../models/User');
 
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
@@ -33,12 +33,10 @@ const randomEventCode = number => {
 	return randomCode;
 };
 
-
 Date.prototype.addDays = days => {
   const date = new Date();
   return date.setDate(date.getDate() + days);
 }
-
 
 router.post('/create-event', limiter, VerifyToken, async (req, res) => {	
 	const [ name, type ] = [
@@ -63,7 +61,6 @@ router.post('/create-event', limiter, VerifyToken, async (req, res) => {
 	if (!user) {
 		return res.status(400).json({ code: 4042 });
 	}
-
 
 	const newEvent = new Event({
 		eventCode: randomEventCode(8),

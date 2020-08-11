@@ -8,12 +8,12 @@ passport.deserializeUser((id, done) => User.findById(id, (err, user) => done(err
 passport.use(new GoogleStrategy({
 		clientID: '494567674994-c2pl5tujpe43g4h58u042poee83m76ot.apps.googleusercontent.com',
 		clientSecret: 'mq9TjmB122cqIgxDeIcyp1ie',
-		callbackURL: 'https://soruio.herokuapp.com/auth/google/redirect'
+		callbackURL: 'http://localhost:3000/auth/google/redirect'
 	}, async (accessToken, refreshToken, profile, done) => {
 		const currentUser = await User.findOne({ connect: 'Google', socialID: profile.id });
 		
 		if (currentUser) {
-			return done(null, { user: currentUser, currentUser: true });
+			return done(null, currentUser);
 		}
 		
 		const newUser = new User({
@@ -33,6 +33,6 @@ passport.use(new GoogleStrategy({
 			}
 		}
 
-		done(null, [newUser, { newUser: true }]);
+		done(null, [newUser]);
 	})
 );

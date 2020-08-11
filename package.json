@@ -8,8 +8,7 @@
   "scripts": {
     "start": "node app.js",
     "start:dev": "nodemon app.js",
-    "test": "mocha --exit --recursive --timeout 50000 ./tests/API/user/autoCompleteUsername.test.js",
-    "consumerNewAccount": "node ./services/rabbitSendEmailNewAccount"
+    "test": "mocha --exit --recursive --timeout 50000 ./tests/API/user/autoCompleteUsername.test.js"
   },
   "keywords": [],
   "author": "İbrahim Mercan",

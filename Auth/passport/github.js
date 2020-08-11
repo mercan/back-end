@@ -21,7 +21,7 @@ router.get('/github', passport.authenticate('github'));
 router.get('/github/redirect', (req, res) => {
 	passport.authenticate('github', async (_, user) => {
 		if (user.emailError) {
-	 		return res.redirect(`https://soru.io/login?email=${user.email}`);
+	 		return res.redirect(`http://localhost:3000/login?email=${user.email}`);
 		}
 		
 		if (Array.isArray(user)) {
@@ -37,8 +37,8 @@ router.get('/github/redirect', (req, res) => {
 		}
 
 		// Array degilse ve kullanıcı giriş yapmaya çalışıyorsa yani kayıt olmuyorsa buraya girecek.
-		if (user.currentUser) {
-			return res.redirect(`https://soru.io/tokenverify?token=${auth_token}`);
+		if (!Array.isArray(user)) {
+			return res.redirect(`http://localhost:3000/tokenverify?token=${auth_token}`);
 		}
 
 		const ipAddress = req.headers['x-forwarded-for'] ||
@@ -70,10 +70,10 @@ router.get('/github/redirect', (req, res) => {
 		sendEmailPublisher(userInfo);
 
 		if (!user[0].username) {
-	 		return res.redirect(`https://soru.io/add/username?token=${auth_token}&github=true`);
+	 		return res.redirect(`http://localhost:3000/add/username?token=${auth_token}&github=true`);
 		}
 	 	
-	 	res.redirect(`https://soru.io/tokenverify?token=${auth_token}`);
+	 	res.redirect(`http://localhost:3000/tokenverify?token=${auth_token}`);
 	})(req, res);
 });
 

@@ -13,7 +13,6 @@ require('./passportAuth/github-setup');
 require('./passportAuth/twitter-setup');
 require('./passportAuth/facebook-setup');
 
-
 // Cookie & Session
 const cookieSession = require('cookie-session');
 const cookieParser = require('cookie-parser');
@@ -30,7 +29,6 @@ const corsOptions = {
 }
 
 app.use(cors(corsOptions));
-
 
 // Cookie Session
 app.use(cookieParser());
@@ -58,35 +56,34 @@ app.use('/', login);
 app.use('/', logout);
 
 
-// API ROUTES GET
+// API EVENT GET
 const eventSearch = require('./API/eventUser/eventSearch');
 const getQuestion = require('./API/eventUser/getQuestion');
 
-// API USER EVENT ROUTES POST
+// API EVENT USER POST
 const joinEvent = require('./API/eventUser/joinEvent');
 const createEvent = require('./API/eventUser/createEvent');
 const questionLike = require('./API/eventUser/questionLike');
 const createQuestion = require('./API/eventUser/createQuestion');
 const userDeleteQuestion = require('./API/eventUser/userDeleteQuestion');
 
-// API CREATOR EVENT ROUTES POST
+// API EVENT CREATOR POST
 const allBanned = require('./API/eventCreator/allBanned');
 const eventBanned = require('./API/eventCreator/eventBanned');
 const deleteEventBanned = require('./API/eventCreator/deleteEventBanned');
 const featureUpdateQ_A = require('./API/eventCreator/featureUpdateQ-A');
 const creatorDeleteQuestion = require('./API/eventCreator/creatorDeleteQuestion');
 
-
 // API USER
-const tokenVerifyLogin_Signup = require('./API/user/tokenVerifyLogin-Signup');
+const tokenVerify = require('./API/tokenVerify');
 const autoCompleteUsername = require('./API/user/autoCompleteUsername');
 const usernameSuggestion = require('./API/user/usernameSuggestion');
 const changeUser = require('./API/user/changeUser');
 const userProfile = require('./API/user/profile');
 const userBlock = require('./API/user/userBlock');
 const userFollow = require('./API/user/follow');
-const userFollowerList = 	require('./API/user/userFollowerList');
-
+const userFollowerList = require('./API/user/userFollowerList');
+const resetPassword = require('./API/user/reset_password');
 
 // API NOTIFICATIONS
 const notification = require('./API/eventCreator/notification');
@@ -95,7 +92,6 @@ const notification = require('./API/eventCreator/notification');
 // GET EVENT
 app.use('/', eventSearch);
 app.use('/', getQuestion);
-
 
 // POST EVENT
 app.use('/', joinEvent);
@@ -112,8 +108,9 @@ app.use('/', deleteEventBanned);
 app.use('/', userDeleteQuestion);
 app.use('/', creatorDeleteQuestion);
 
+app.use('/', tokenVerify);
+
 // USER
-app.use('/', tokenVerifyLogin_Signup);
 app.use('/', autoCompleteUsername);
 app.use('/', usernameSuggestion);
 app.use('/', userProfile);
@@ -121,7 +118,7 @@ app.use('/', changeUser);
 app.use('/', userBlock);
 app.use('/', userFollow);
 app.use('/', userFollowerList);
-
+app.use('/', resetPassword);
 
 // NOTIFICATIONS
 app.use('/', notification);

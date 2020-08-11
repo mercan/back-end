@@ -14,7 +14,7 @@ const User = require('../../models/User');
 // Helpers
 const followSchemaCreate = require('../../helpers/followSchemaCreate');
 
-// New Account Email Publisher RabbitMQ
+// RabbitMQ Publisher 
 const sendEmailPublisher = require('../../services/publisherSendEmailNewAccount');
 
 const limiter = rateLimit({

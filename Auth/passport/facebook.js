@@ -2,9 +2,9 @@
 const tokenCreate = require('../../helpers/tokenCreate');
 
 // Package
-const router   = require('express').Router();
-const fetch    = require('node-fetch');
+const router = require('express').Router();
 const passport = require('passport');
+const fetch = require('node-fetch');
 
 // Models
 const User = require('../../models/User');
@@ -21,7 +21,7 @@ router.get('/facebook', passport.authenticate('facebook'));
 router.get('/facebook/redirect', (req, res) => {
 	passport.authenticate('facebook', async (_, user) => {
 		if (user.emailError) {
-	 		return res.redirect(`https://soru.io/login?email=${user.email}`);
+	 		return res.redirect(`http://localhost:3000/login?email=${user.email}`);
 		}
 		
 		if (Array.isArray(user)) {
@@ -37,8 +37,8 @@ router.get('/facebook/redirect', (req, res) => {
 		}
 
 		// Array degilse ve kullanıcı giriş yapmaya çalışıyorsa yani kayıt olmuyorsa buraya girecek.
-		if (user.currentUser) {
-			return res.redirect(`https://soru.io/tokenverify?token=${auth_token}`);
+		if (!Array.isArray(user)) {
+			return res.redirect(`http://localhost:3000/tokenverify?token=${auth_token}`);
 		}
 
 		const ipAddress = req.headers['x-forwarded-for'] ||
@@ -69,7 +69,7 @@ router.get('/facebook/redirect', (req, res) => {
 
 		sendEmailPublisher(userInfo);
 
-	 	res.redirect(`https://soru.io/add/username?token=${auth_token}`);
+	 	res.redirect(`http://localhost:3000/add/username?token=${auth_token}`);
 	})(req, res);
 });
 

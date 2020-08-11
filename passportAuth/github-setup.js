@@ -10,12 +10,12 @@ passport.deserializeUser((id, done) => User.findById(id, (err, user) => done(err
 passport.use(new GitHubStrategy ({
 		clientID: '5b123edcdea4a8664977',
 		clientSecret: 'b8b7f109d40056fb3ed9a2114d053f5e646248ca',
-		callbackURL: 'https://soruio.herokuapp.com/auth/github/redirect'
+		callbackURL: 'http://localhost:3000/auth/github/redirect'
 	}, async (accessToken, refreshToken, profile, done) => {
 		const currentUser = await User.findOne({ connect: 'Github', socialID: profile.id });
 		
 		if (currentUser) {
-			return done(null, { user: currentUser, currentUser: true });
+			return done(null, currentUser);
 		}
 		
 		const newUser = new User({
@@ -25,7 +25,6 @@ passport.use(new GitHubStrategy ({
 			email: profile._json.email || null,
 			picture: profile._json.avatar_url
 		});
-		
 
 		if (profile._json.email) {
 			const emailControl = await User.findOne({ email: profile._json.email }, '_id');
@@ -43,6 +42,6 @@ passport.use(new GitHubStrategy ({
 			}
 		}
 		
-		done(null, [newUser, { newUser: true }]);
+		done(null, [newUser]);
 	})
 );

@@ -18,7 +18,18 @@ const newUser = new Schema({
 
 	hobbies: [ String ],
 
-	accounts: {
+	oldPasswords: [{
+		_id: false,
+		password: { type: String, maxlength: 80, minlength: 7 },
+		modification_date: { type: Date, default: Date.now() },
+	}],
+
+	account: {
+		reset_password_code: { type: String, maxlength: 6, minlength: 6 },
+		reset_password_code_date: { type: Date },
+	},
+
+	socialMediaAccounts: {
 		twitter: 	 String,
 		facebook:  String,
 		github: 	 String,

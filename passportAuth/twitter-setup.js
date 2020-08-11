@@ -14,7 +14,7 @@ passport.use(new TwitterStrategy({
 		const currentUser = await User.findOne({ connect: 'Twitter', socialID: profile.id });
 		
 		if (currentUser) {
-			return done(null, { user: currentUser, currentUser: true });
+			return done(null, currentUser);
 		}
 
 		const newUser = new User({
@@ -43,6 +43,6 @@ passport.use(new TwitterStrategy({
 			}
 		}
 		
-		done(null, [newUser, { newUser: true }]);
+		done(null, [newUser]);
 	})
 );

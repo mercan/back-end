@@ -8,13 +8,13 @@ passport.deserializeUser((id, done) => User.findById(id, (err, user) => done(err
 passport.use(new FacebookStrategy ({
 		clientID: '2626956430865574',
 		clientSecret: '2d078645d1aa1c866d7f41164dd5ecf5',
-		callbackURL: 'https://soruio.herokuapp.com/auth/facebook/redirect',
+		callbackURL: 'http://localhost:3000/auth/facebook/redirect',
 		profileFields: ['id', 'displayName', 'photos', 'email', 'gender', 'birthday']
 	}, async (accessToken, refreshToken, profile, done) => {
 		const currentUser = await User.findOne({ connect: 'Facebook', socialID: profile.id });
 		
 		if (currentUser) {
-			return done(null, { user: currentUser, currentUser: true });
+			return done(null, currentUser);
 		}
 		
 		const newUser = new User({
@@ -36,7 +36,7 @@ passport.use(new FacebookStrategy ({
 			}
 		}
 
-		done(null, [newUser, { newUser: true }]);
+		done(null, [newUser]);
 	})
 );
 
