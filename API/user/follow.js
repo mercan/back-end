@@ -17,13 +17,13 @@ const User = require('../../models/User');
 const Follow = require('../../models/Follow');
 
 router.post('/follow', limiter, VerifyToken, async (req, res) => {
-	const { userID, type = 'Follow' } = req.body;
-	const decodeUserID = req.decode.userid;
+	const { userID, type } = req.body; // Takip etmeye veya takipten çıkmaya çalıştığı kişi.
+	const decodeUserID = req.decode.userid; // Kişinin Kendisi.
 	 
 	if (!userID || !mongoose.Types.ObjectId.isValid(userID)) {
 		return res.status(400).json({ 
 			code: 400,
-			message: 'UserID is empty or invalid.'
+			message: 'User id is empty or invalid.'
 		});
 	}
 
@@ -37,7 +37,7 @@ router.post('/follow', limiter, VerifyToken, async (req, res) => {
 	if (userID.toString() === decodeUserID.toString()) {
 		return res.status(400).json({ 
 			code: 400,
-			message: 'You can\'t follow yourself.'
+			message: 'You cannot follow yourself.'
 		});
 	}
 
@@ -55,7 +55,7 @@ router.post('/follow', limiter, VerifyToken, async (req, res) => {
 	if (!userCheck) {
 		return res.status(400).json({ 
 			code: 400,
-			message: 'User not found'
+			message: 'User not found.'
 		});
 	}
 
@@ -88,6 +88,8 @@ router.post('/follow', limiter, VerifyToken, async (req, res) => {
 				userID: followID
 			}
 		};
+
+		console.log(updateQuery);
 
 		const update = await Follow.updateOne({ userID }, updateQuery);
 
@@ -127,7 +129,10 @@ router.post('/follow', limiter, VerifyToken, async (req, res) => {
 				1,
 			);
 
-			return res.status(200).json({ code: 200, message: 'You started to follow.' });
+			return res.status(200).json({
+				code: 200,
+				message: 'You started to follow.'
+			});
 		}
 
 		return res.status(400).json({ 
@@ -152,7 +157,7 @@ router.post('/follow', limiter, VerifyToken, async (req, res) => {
 				-1,
 			);
 
-			if (unFollowing) {
+			if (unFollowing.nModified) {
 				const unFollowers = await followUserAdd(
 					userID,
 					'$pull',

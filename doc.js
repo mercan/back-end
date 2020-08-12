@@ -137,16 +137,16 @@ fetch('http://localhost:3000/like-question-anonymous', {
 });
 */
 
-/*
+
 fetch('http://localhost:3000/signup', {
 	method: 'POST',
 	headers: {
 		'Content-Type': 'application/json; charset=utf-8'
 	},
 	body: JSON.stringify({
-		username: 'Mercan',
+		username: 'Deneme',
 		name: 'İbrahim Can Mercan',
-		email: 'ultuma00@gmail.com',
+		email: 'denemee@gmail.com',
 		password: 'mercan123456'
 	})
 }).then(async res => {
@@ -159,7 +159,7 @@ fetch('http://localhost:3000/signup', {
 	// Data içinde ki code sorgulanıcak öyle işlem yapılacak.
 	console.log(data);
 });
-*/
+
 
 /*
 fetch('http://localhost:3000/login', {
@@ -169,8 +169,8 @@ fetch('http://localhost:3000/login', {
 	},
 	body: JSON.stringify({
  // username: 'Deneme',
-		email: 'deneme@gmail.com',
-		password: 'deneme123456'
+		email: 'ultuma00@gmail.com',
+		password: '123456789'
 	})
 }).then(async res => {
 	if (res.status === 429) {
@@ -704,10 +704,10 @@ fetch('http://localhost:3000/follow', {
 	method: 'POST',
 	headers: {
 		'Content-Type': 'application/json; charset=utf-8',
-		'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI1ZjBiYTNjNzFhZTBiNjAwMTc0ODk3NDAiLCJuYW1lIjoixLBicmFoaW0gTWVyY2FuIiwicGljdHVyZSI6Imh0dHBzOi8vc2NvbnRlbnQtaWFkMy0xLnh4LmZiY2RuLm5ldC92L3QxLjMwNDk3LTEvY3AwL2MxNS4wLjUwLjUwYS9wNTB4NTAvODQ2MjgyNzNfMTc2MTU5ODMwMjc3ODU2Xzk3MjY5MzM2MzkyMjgyOTMxMl9uLmpwZz9fbmNfY2F0PTEmX25jX3NpZD0xMmIzYmUmX25jX29oYz1PTzBCUmxVMExzY0FYX1JMRHNUJl9uY19odD1zY29udGVudC1pYWQzLTEueHgmb2g9NWNmNTViZTBjNmFkY2IzODI5Mzg2N2RlMDgwZjg1NzEmb2U9NUYzMjFFMzgiLCJpYXQiOjE1OTQ1OTgzNDMsImV4cCI6MTU5NzE5MDM0M30.Ej-_cLaUIN5__m0dW1DZhh3Go6Rwwu6GH4tpPYwtxYY'
+		'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI1ZjMxZTBkMzc4NTk3ZDA4OGMwMmZkMWUiLCJuYW1lIjoixLBicmFoaW0gQ2FuIE1lcmNhbiIsInBpY3R1cmUiOiJodHRwczovL3d3dy5ib29rc2llLmNvbS9maWxlcy9wcm9maWxlcy8yMi9tci1hbm9ueW1vdXMucG5nIiwiaWF0IjoxNTk3MjQxNzczLCJleHAiOjE1OTg1Mzc3NzN9.90TaVG8kM27W4gu4YR1JGM7-SZ1XXyOM4PgMpeBxiMM'
 	},
 	body: JSON.stringify({
-		userID: '5f0b984648590816dcda6835', // Takip edeceğin / Takip etmeyi bırakacağın kişi ID
+		userID: '5f31e0d378597d088c02fd1e', // Takip edeceğin / Takip etmeyi bırakacağın kişi ID
 		type: 'Follow' // Unfollow / Follow
 	})
 }).then(async res => {
@@ -777,7 +777,7 @@ fetch('http://localhost:3000/reset_password_verify?code=JBM0S3&username=Mercan',
 });
 */
 
-// $2b$10$KUk9D41mMYX7B6b6bTu5o.U7EUvGVcsxidbl6JeWNAW06n29nsDXS
+/*
 fetch('http://localhost:3000/reset_password_change', {
 	method: 'POST',
 	headers: {
@@ -798,3 +798,4 @@ fetch('http://localhost:3000/reset_password_change', {
 	// Data içinde ki code sorgulanıcak öyle işlem yapılacak.
 	console.log(data);
 });
+*/

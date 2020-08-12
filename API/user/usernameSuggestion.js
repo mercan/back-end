@@ -14,8 +14,7 @@ router.post('/username-suggestion', limiter, VerifyToken, async (req, res) => {
 	const randomLength = Math.floor(Math.random() * 10) + 1;
 
 	const randomUsernameArray = [];
-	let randomUsername;
-	let check;
+	let randomUsername, check;
 
 	while (!check) {
 		for (let i = 0; i < randomLength; i++) {

@@ -9,54 +9,60 @@ const limiter = rateLimit({
   max: 30
 });
 
-
 router.post('/login', async (req, res) => {
-	const [ email, username, password ] = [ 
+	const { email = false, username = false, password = false } = req.body;
 
-		req.body.email ? req.body.email.trim() : false,
-		req.body.username ? req.body.username.trim() : false,
-		req.body.password
-	];
-
-
-	if (
-		!email   && !username || !password ||
-		email    && email.length > 60 || email.length < 14 ||
-		username && username.length > 40 || username.length < 3 ||
-		password && password.length > 80 || password.length < 7
-	) {
-		return res.status(400).json({ code: 400 });
-	}
-
-	let user;
-
-	if (username) {
-		user = await User.findOne({ username }, {
-			_id: 1, name: 1, picture: 1, password: 1
+	if (!email && !username) {
+		return res.status(400).json({
+			code: 400,
+			message: 'Email or Username cannot be empty.'
 		});
 
-	} else if (email) {
-		user = await User.findOne({ email	}, {
-			_id: 1, name: 1, picture: 1, password: 1
+	} else if (email && email.length > 60 || email.length < 14) {
+		return res.status(400).json({
+			code: 400,
+			message: 'Email is invalid.',
+		});
+
+	} else if (username && username.length > 40 || username.length < 3) {
+		return res.status(400).json({
+			code: 400,
+			message: 'Username is invalid.',
+		});
+
+	} else if (password && password.length > 80 || password.length < 7) {
+		return res.status(400).json({
+			code: 400,
+			message: 'The password must be at most 80 letters long and at least 7 letters long.',
 		});
 	}
+	
+	const findQuery = email ? { email } : { username };
 
+	const user = await User.findOne(findQuery, {
+		_id: 1, name: 1, picture: 1, password: 1
+	});
+	
 	if (!user) {
-		return res.status(400).json({ code: 4042 });
+		return res.status(400).json({
+			code: 400,
+			message: `${email ? 'Email' : 'Username'} not registered.`
+		});
 	}
 
 	const userPasswordControl = await bcrypt.compare(password, user.password);
 
-	if (!userPasswordControl)  {
-		return res.status(400).json({ code: 4042 });
+	if (!userPasswordControl) { // Şifre yanlış.
+		return res.status(400).json({
+			code: 400,
+			message: 'Password is incorrect.'
+		});
 	}
 
-	return res.json(
-		{ 
-			code: 200, token: tokenCreate(user._id, user.name, user.picture)
-		}
-	);
+	return res.status(200).json({
+		code: 200,
+		token: tokenCreate(user._id, user.name, user.picture),
+	});
 });
-
 
 module.exports = router;
