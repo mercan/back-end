@@ -12,34 +12,45 @@ const User = require('../../models/User');
 router.post('/all-banned-add', VerifyToken, async (req, res) => {
 	const { userID, questionID } = req.body;
 	
-	if (!userID && !questionID || userID && !mongoose.Types.ObjectId.isValid(userID) 
-		|| questionID && !mongoose.Types.ObjectId.isValid(questionID)) {
-		return res.status(400).json({ code: 400 });
+	if (
+		!userID && !questionID || userID && !mongoose.Types.ObjectId.isValid(userID) || 
+		questionID && !mongoose.Types.ObjectId.isValid(questionID)
+	) {
+		return res.status(400).json({
+			code: 400
+		});
 	}
 
-	let user;
-
 	if (userID) {
-		user = await User.findOne({ _id: req.decode.userid }, 'bannedUserID');
+		var user = await User.findOne({ _id: req.decode.userid }, 'bannedUserID');
 	} else {
-		user = await User.findOne({ _id: req.decode.userid }, 'bannedUserIP');
+		var user = await User.findOne({ _id: req.decode.userid }, 'bannedUserIP');
 	}
 	
 	if (!user) {
-		return res.status(400).code({ code: 4042 });
+		return res.status(400).code({
+			code: 400,
+			message: 'User not found.',
+		});
 	}
 
 	if (userID) {
 		const userControl = await User.findOne({ _id: userID }, 'name');
 
 		if (!userControl) {
-			return res.status(400).json({ code: 4042 });
+			return res.status(400).json({
+				code: 400,
+				message: 'User not found.',
+			});
 		}
 
 		const banUserIDControl = user.bannedUserID.some(user => user.userID == userID);
 	
 		if (banUserIDControl) {
-			return res.status(400).json({ code: 'ban400' });
+			return res.status(400).json({
+				code: 400,
+				message: 'User has been banned before.'
+			});
 		}
 
 		const banUpdate = await User.updateOne({ _id: req.decode.userid }, {
@@ -62,10 +73,19 @@ router.post('/all-banned-add', VerifyToken, async (req, res) => {
 				}
 			});
 
-			return eventsBan.nModified ? res.json({ code: 200 }) : res.status(304).json({ code: 304 });
+			if (eventsBan.nModified) {
+				return res.status(200).json({
+					code: 200,
+					message: 'The user is banned from all their events and the events all you will create from banned',
+				});
+			}
+
+			return res.status(400).json({
+				code: -1,
+				message: 'Something went wrong.'
+			});
 		}
 
-		return res.status(304).json({ code: 304 });
 	}
 	
 	
@@ -74,7 +94,10 @@ router.post('/all-banned-add', VerifyToken, async (req, res) => {
 	});
 
 	if (!question) {
-		return res.status(400).json({ code: 4042 });
+		return res.status(400).json({
+			code: 400,
+			message: 'User not found.'
+		});
 	}
 
 	const bannedUserIPControl = user.bannedUserIP.includes(question.questions[0].ipAddress);
@@ -87,19 +110,31 @@ router.post('/all-banned-add', VerifyToken, async (req, res) => {
 		});
 
 		if (banUpdate.nModified) {
-			const eventsBan =  await Event.updateMany({ 'creator.userID': req.decode.userid }, {
+			const eventsBan = await Event.updateMany({ 'creator.userID': req.decode.userid }, {
 				$push: {
 					bannedUserIP: question.questions[0].ipAddress
 				}
 			});
 
-			return eventsBan.nModified ? res.json({ code: 200 }) : res.status(304).json({ code: 304 });
+			if (eventsBan.nModified) {
+				return res.status(200).json({
+					code: 200,
+					message: 'The user is banned from all their events and the events all you will create from banned',
+				});
+			}
+
+			return res.status(400).json({
+				code: -1,
+				message: 'Something went wrong.'
+			});
 		}
 
-		return res.status(304).json({ code: 304 });
 	}
 
-	return res.status(400).json({ code: 'ban400' });
+	return res.status(400).json({
+		code: 400,
+		message: 'User has been banned before.'
+	});
 });
 
 

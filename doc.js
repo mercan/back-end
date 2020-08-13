@@ -137,40 +137,17 @@ fetch('http://localhost:3000/like-question-anonymous', {
 });
 */
 
-
+/*
 fetch('http://localhost:3000/signup', {
 	method: 'POST',
 	headers: {
 		'Content-Type': 'application/json; charset=utf-8'
 	},
 	body: JSON.stringify({
-		username: 'Deneme',
 		name: 'İbrahim Can Mercan',
-		email: 'denemee@gmail.com',
-		password: 'mercan123456'
-	})
-}).then(async res => {
-	if (res.status === 429) {
-		// Ekrana hata basılacak
-		return console.log(res.status, res.statusText);
-	}
-
-	const data = await res.json();
-	// Data içinde ki code sorgulanıcak öyle işlem yapılacak.
-	console.log(data);
-});
-
-
-/*
-fetch('http://localhost:3000/login', {
-	method: 'POST',
-	headers: {
-		'Content-Type': 'application/json; charset=utf-8'
-	},
-	body: JSON.stringify({
- // username: 'Deneme',
-		email: 'ultuma00@gmail.com',
-		password: '123456789'
+		email: 'deneme@gmail.com',
+		username: 'Deneme',
+		password: 'mercan123456',
 	})
 }).then(async res => {
 	if (res.status === 429) {
@@ -183,6 +160,29 @@ fetch('http://localhost:3000/login', {
 	console.log(data);
 });
 */
+
+
+fetch('http://localhost:3000/login', {
+	method: 'POST',
+	headers: {
+		'Content-Type': 'application/json; charset=utf-8'
+	},
+	body: JSON.stringify({
+ 		username: 'Mercan',
+		//email: 'ultuma00@gmail.com',
+		password: '123456789'
+	})
+}).then(async res => {
+	if (res.status === 429) {
+		// Ekrana hata basılacak
+		return console.log(res.status, res.statusText);
+	}
+
+	const data = await res.json();
+	// Data içinde ki code sorgulanıcak öyle işlem yapılacak.
+	console.log(data);
+});
+
 
 /*
 fetch('http://localhost:3000/creator-delete-question', {

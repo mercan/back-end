@@ -1,4 +1,3 @@
-const apiSecretKey = require('../config/api_secret_key').apiSecretKey;
 const jwt = require('jsonwebtoken');
 
 const tokenCheck = token => {
@@ -6,7 +5,7 @@ const tokenCheck = token => {
 	if (!token) {
 		return false;
 	} else {
-		return jwt.verify(token, apiSecretKey, (err, decode) =>
+		return jwt.verify(token, process.env.TOKEN_SECRET_KEY, (err, decode) =>
 			err ? false : decode
 		);
 	}

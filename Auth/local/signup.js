@@ -17,45 +17,27 @@ const followSchemaCreate = require('../../helpers/followSchemaCreate');
 // RabbitMQ Publisher 
 const sendEmailPublisher = require('../../services/publisherSendEmailNewAccount');
 
+// User Validation
+const { UserSignUpSchema } = require('../../validation/users/user.schema');
+
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 20
+  max: 20,
+  headers: false
 });
 
 router.post('/signup', limiter, async (req, res) => {
-	const [ name, email, username, password ] = [
+	const validation = await UserSignUpSchema.validate(req.body);
 
-		req.body.name ? req.body.name.trim() : false,
-		req.body.email ? req.body.email.trim() : false,
-		req.body.username ? req.body.username.trim() : false,
-		req.body.password,
-	];
-
-	if (!email && !username) {
+	if (validation.error) {
 		return res.status(400).json({
 			code: 400,
-			message: 'Email or Username cannot be empty.'
-		});
-
-	} else if (email && email.length > 60 || email.length < 14) {
-		return res.status(400).json({
-			code: 400,
-			message: 'Email is invalid.',
-		});
-
-	} else if (username && username.length > 40 || username.length < 3) {
-		return res.status(400).json({
-			code: 400,
-			message: 'Username is invalid.',
-		});
-
-	} else if (password && password.length > 80 || password.length < 7) {
-		return res.status(400).json({
-			code: 400,
-			message: 'The password must be at most 80 letters long and at least 7 letters long.',
+			message: validation.error.details[0].message,
 		});
 	}
 
+	const { name, email, username, password } = validation.value;
+	
 	const usernameControl = await User.findOne({ username }, '_id');
 	const emailControl = await User.findOne({ email }, '_id');
 

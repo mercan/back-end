@@ -9,6 +9,9 @@ const router = require('express').Router();
 const Event = require('../../models/Event');
 const User = require('../../models/User');
 
+// Validation
+const { createQuestionSchema } = require('../../validation/events/event.schema');
+
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000,
   max: 35,
@@ -58,46 +61,54 @@ const createQuestion = async (eventCode, user, ipAddress, question) => {
 }
 
 router.post('/create-question-user', limiter, VerifyToken, async (req, res) => {
-	const [ eventCode, question ] = [ 
-		req.body.eventCode,
-		req.body.question ? req.body.question.trim() : undefined 
-	];
+	const validation = await createQuestionSchema.validate(req.body);
 
-	if (
-		!eventCode || !question &&
-		eventCode && eventCode.length > 25 || eventCode.length < 3 &&
-		question && question.length > 160 || question.length < 8
-	) {
-		return res.status(400).json({ code: 400 });
+	if (validation.error) {
+		return res.status(400).json({
+			code: 400,
+			message: validation.error.details[0].message,
+		});
 	}
+
+	const { eventCode, question } = validation.value;
 
 	const event = await Event.findOne(
 		{ 
 			eventCode: eventCode, deleteEvent: false 
 		},
 		{
-			totalQuestion: 1, features: 1, bannedUserID: 1
+			totalQuestion: 1, features: 1, bannedUserID: 1	
 		}
-		
 	);
 	
 	if (!event) {
-		return res.status(400).json({ code: 400 });
+		return res.status(400).json({code: 400, message: 'Event not found.' });
 	}
 
 	if (!event.features.question) {
-		return res.status(400).json({ code: -99 });
+		return res.status(400).json({
+			code: 400,
+			message: 'The feature to ask questions to the event has been turned off.'
+		});
 	}
 
-	if (event.features.totalQuestionLimit !== -1 &&
-		event.features.totalQuestionLimit <= event.totalQuestion) {
-		return res.status(400).json({ code: -99 });
+	if (
+		event.features.totalQuestionLimit !== -1 &&
+		event.features.totalQuestionLimit <= event.totalQuestion
+	) {
+		return res.status(400).json({
+			code: 400,
+			message: 'The limit for asking questions to the event is over.'
+		});
 	}
 
 	const user = await User.findOne({ _id: req.decode.userid }, 'name picture');
 
 	if (!user) {
-		return res.status(401).json({ code: 401 });
+		return res.status(400).json({
+			code: 400,
+			message: 'User not found.'
+		});
 	}
 
 	const banControl = 
@@ -116,16 +127,16 @@ router.post('/create-question-user', limiter, VerifyToken, async (req, res) => {
 
 
 router.post('/create-question-anonymous', limiter, async (req, res) => {
-	const { eventCode, question } = req.body;
+	const validation = await createQuestionSchema.validate(req.body);
 
-	if (
-		!eventCode || !question &&
-		eventCode && eventCode.length > 25 || eventCode.length < 3 &&
-		question && question.length > 160 || question.length < 8
-	) {
-		return res.status(400).json({ code: 400 });
+	if (validation.error) {
+		return res.status(400).json({
+			code: 400,
+			message: validation.error.details[0].message,
+		});
 	}
-	
+
+	const { eventCode, question } = validation.value;
 
 	const event = await Event.findOne(
 		{ 
@@ -138,33 +149,44 @@ router.post('/create-question-anonymous', limiter, async (req, res) => {
 		req.connection.remoteAddress;
 
 	if (!event) {
-		return res.status(400).json({ code: 400 });
+		return res.status(400).json({code: 400, message: 'Event not found.' });
 	}
 
 	if (!event.features.question) {
-		return res.status(400).json({ code: -99 });
+		return res.status(400).json({
+			code: 400,
+			message: 'The feature to ask questions to the event has been turned off.'
+		});
 	}
 
 	if (event.features.loginQuestion) {
-		return res.status(403).json({ code: '4004question' });
+		return res.status(400).json({
+			code: 400,
+			message: 'You must be logged in to ask questions to the event.'
+		});
 	}
 	
 	if (
 		event.features.totalQuestionLimit !== -1 &&
 		event.features.totalQuestionLimit <= event.totalQuestion
 	) {
-		return res.status(400).json({ code: -99 });
+		return res.status(400).json({
+			code: 400,
+			message: 'The limit for asking questions to the event is over.'
+		});
 	}
 
 	if (event.bannedUserIP.includes(ipAddress)) {
-		return res.status(400).json({ code: -990 });
+		return res.status(400).json({
+			code: 400,
+			message: 'You cannot ask questions because you are banned from the event.'
+		});
 	}
 
 	if (await createQuestion(eventCode, false, ipAddress, question)) {
 		return res.json({ code: 200 });
 	}
 
-	return res.status(400).json({ code: 400 });
 });
 
 module.exports = router;

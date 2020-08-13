@@ -1,4 +1,3 @@
-const apiSecretKey = require('../config/api_secret_key').apiSecretKey;
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
@@ -11,7 +10,7 @@ module.exports = (req, res, next) => {
 		});
 	}
 
-	jwt.verify(token, apiSecretKey, (err, decode) => {
+	jwt.verify(token, process.env.TOKEN_SECRET_KEY, (err, decode) => {
 		if (err) {
 			return res.status(401).json({ 
 				code: 401,

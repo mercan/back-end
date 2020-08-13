@@ -57,8 +57,8 @@ const newEvent = new Schema({
 	questions: [{
 		userID: Schema.Types.ObjectId,
 		ipAddress: String,
-		name: 		String,
-		picture: String,
+		name: 		 String,
+		picture:   String,
 		question: 	{ type: String, minlength: 8, maxlength: 160 },
 		created_AtMoment: { type: String, default: moment().format('LLL') },
 		created_At: { type: Date, default: Date.now() },

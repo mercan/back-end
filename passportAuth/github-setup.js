@@ -1,15 +1,15 @@
 const GitHubStrategy = require('passport-github').Strategy;
-const User = require('../models/User');
 const passport = require('passport');
 
-
+// Models
+const User = require('../models/User');
 
 passport.serializeUser((user, done) => done(null, user.id) );
 passport.deserializeUser((id, done) => User.findById(id, (err, user) => done(err, user)));
 
 passport.use(new GitHubStrategy ({
-		clientID: '5b123edcdea4a8664977',
-		clientSecret: 'b8b7f109d40056fb3ed9a2114d053f5e646248ca',
+		clientID: process.env.GITHUB_CLIENT_ID,
+		clientSecret: process.env.GITHUB_CLIENT_SECRET,
 		callbackURL: 'http://localhost:3000/auth/github/redirect'
 	}, async (accessToken, refreshToken, profile, done) => {
 		const currentUser = await User.findOne({ connect: 'Github', socialID: profile.id });

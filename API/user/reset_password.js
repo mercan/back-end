@@ -9,6 +9,9 @@ const User = require('../../models/User');
 // RabbitMQ Publisher
 const resetPassword = require('../../services/publisherResetPassword');
 
+// Email Validation 
+const { isEmail, isUsername } = require('../../validation/users/user.schema');
+
 const limiter = rateLimit({
 	windowMs: 5 * 60 * 1000,
 	max: 10,
@@ -24,15 +27,17 @@ const resetPasswordCodeCreate = number => {
 	];
 
 	let randomCode = '';
+
 	for (let i = 0; i < number; i++) {
 		const random = Math.floor(Math.random() * (RandomArray.length - 1));
 		randomCode += RandomArray[random];
 	}
+
 	return randomCode;
 };
 
 router.get('/reset_password', limiter, async (req, res) => {
-	const { email, username } = req.query;
+	let { email, username } = req.query;
 
 	if (!email && !username) {
 		return res.status(400).json({
@@ -56,6 +61,30 @@ router.get('/reset_password', limiter, async (req, res) => {
 	}
 
 	if (email) {
+		const validation = await isEmail.validate({ email });
+
+		if (validation.error) {
+			return res.status(400).json({
+				code: 400,
+				message: validation.error.details[0].message,
+			});
+		}
+
+		email = validation.value.email;
+	} else {
+		const validation = await isUsername.validate({ username });
+
+		if (validation.error) {
+			return res.status(400).json({
+				code: 400,
+				message: validation.error.details[0].message,
+			});
+		}
+
+		username = validation.value.username;
+	}
+
+	if (email) {
 		const user = await User.findOne({ email }, '_id connect');
 
 		if (!user) {
@@ -68,7 +97,7 @@ router.get('/reset_password', limiter, async (req, res) => {
 		if (user.connect) {
 			return res.status(400).json({
 				code: 400,
-				message: `Because you are connected with ${user.connect}, the password cannot be changed.`
+				message: `Because you are connected with ${user.connect}, the password cannot be changed.`,
 			});
 		}
 
@@ -92,7 +121,7 @@ router.get('/reset_password', limiter, async (req, res) => {
 	if (user.connect) {
 		return res.status(400).json({
 			code: 400,
-			message: `Because you are connected with ${user.connect}, the password cannot be changed.`
+			message: `Because you are connected with ${user.connect}, the password cannot be changed.`,
 		});
 	}
 
@@ -107,7 +136,7 @@ router.get('/reset_password', limiter, async (req, res) => {
 	
 	return res.status(200).json({
 		code: 200,
-		message: 'Password reset email has been sent.'
+		message: 'Password reset email has been sent.',
 	});
 
 });
@@ -156,19 +185,19 @@ router.get('/reset_password_verify', limiter, async (req, res) => {
 			
 			return res.status(400).json({
 				code: 400,
-				message: `Because you are connected with ${user.connect}, the password cannot be changed.`
-			})
+				message: `Because you are connected with ${user.connect}, the password cannot be changed.`,
+			});
 		}
 
 		return res.status(400).json({
 			code: 400,
-			message: 'The validity of the code has expired.'
+			message: 'The validity of the code has expired.',
 		});
 	}
 
 	return res.status(400).json({
 		code: 400,
-		message: 'Invalid Code.'
+		message: 'Invalid Code.',
 	});
 
 });

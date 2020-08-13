@@ -1,8 +1,7 @@
 const sgMail = require('@sendgrid/mail');
 const amqp = require('amqplib');
-const fs = require('fs');
 
-sgMail.setApiKey("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");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 connectRabbitMQ();
 
@@ -28,23 +27,7 @@ async function connectRabbitMQ() {
 
 			const sendEmail = await sgMail.send(msg);
 
-			if (sendEmail[0].statusCode === 202) {
-				channel.ack(data);
-				const log = `Email: ${user.email} - Date: ${new Date()} - Gönderildi\n`;
-				
-				fs.appendFile('resetPasswordLog.txt', log, 'utf8', err => {
-				  if (err) throw err;
-				});
-				return;
-			}
-
-			channel.nack(data);
-			const log = `Email: ${user.email} - Date: ${new Date()} - Gönderilemedi\n`;			
-			
-			fs.appendFile('resetPasswordLog.txt', log, 'utf8', err => {
-				if (err) throw err;
-			});
-
+			sendEmail[0].statusCode === 202 ? channel.ack(data) : channel.nack(data);
 		});
 
 	} catch (error) {

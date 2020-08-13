@@ -1,42 +1,40 @@
+// Token
 const tokenCreate = require('../../helpers/tokenCreate');
-const rateLimit   = require('express-rate-limit');
-const User   = require('../../models/User');
+
+// Package
+const rateLimit = require('express-rate-limit');
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 
+// Models
+const User = require('../../models/User');
+
+// User Validation
+const { UserLoginEmail, UserLoginUsername } = require('../../validation/users/user.schema');
+
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 30
+  max: 30,
+  headers: false
 });
 
 router.post('/login', async (req, res) => {
-	const { email = false, username = false, password = false } = req.body;
+	
+	if (req.body.email) {
+		var validation = await UserLoginEmail.validate({ email: req.body.email, password: req.body.password });
+	} else {
+		var validation = await UserLoginUsername.validate({ username: req.body.username, password: req.body.password });
+	}
 
-	if (!email && !username) {
+	if (validation.error) {
 		return res.status(400).json({
 			code: 400,
-			message: 'Email or Username cannot be empty.'
-		});
-
-	} else if (email && email.length > 60 || email.length < 14) {
-		return res.status(400).json({
-			code: 400,
-			message: 'Email is invalid.',
-		});
-
-	} else if (username && username.length > 40 || username.length < 3) {
-		return res.status(400).json({
-			code: 400,
-			message: 'Username is invalid.',
-		});
-
-	} else if (password && password.length > 80 || password.length < 7) {
-		return res.status(400).json({
-			code: 400,
-			message: 'The password must be at most 80 letters long and at least 7 letters long.',
+			message: validation.error.details[0].message,
 		});
 	}
-	
+
+	const { email, username, password } = validation.value;
+
 	const findQuery = email ? { email } : { username };
 
 	const user = await User.findOne(findQuery, {

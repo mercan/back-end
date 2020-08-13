@@ -1,13 +1,15 @@
 const FacebookStrategy = require('passport-facebook').Strategy;
-const User = require('../models/User');
 const passport = require('passport');
+
+// Models
+const User = require('../models/User');
 
 passport.serializeUser((user, done) => done(null, user.id));
 passport.deserializeUser((id, done) => User.findById(id, (err, user) => done(err, user)));
 
 passport.use(new FacebookStrategy ({
-		clientID: '2626956430865574',
-		clientSecret: '2d078645d1aa1c866d7f41164dd5ecf5',
+		clientID: process.env.FB_CLIENT_ID,
+		clientSecret: process.env.FB_CLIENT_SECRET,
 		callbackURL: 'http://localhost:3000/auth/facebook/redirect',
 		profileFields: ['id', 'displayName', 'photos', 'email', 'gender', 'birthday']
 	}, async (accessToken, refreshToken, profile, done) => {

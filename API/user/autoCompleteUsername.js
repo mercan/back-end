@@ -1,6 +1,9 @@
+// Package
 const rateLimit = require('express-rate-limit');
-const router    = require('express').Router();
-const User      = require('../../models/User');
+const router = require('express').Router();
+
+// Models
+const User = require('../../models/User');
 
 const limiter = rateLimit({
   windowMs: 5 * 60 * 1000,
@@ -13,7 +16,10 @@ router.get('/username-search', limiter, async (req, res) => {
 	const returnArray  = [];
 	
 	if (!username) {
-		return res.status(400).json({ code: 400, message: 'Username cannot be empty' });
+		return res.status(400).json({
+			code: 400,
+			message: 'Username cannot be empty'
+		});
 	}
 
 	// Return data: [ { username: "Username"}, { username: "Username"} ]
@@ -22,7 +28,7 @@ router.get('/username-search', limiter, async (req, res) => {
 			username: { $regex: new RegExp(`^${username}`, 'i') } 
 		},
 		{
-			id: 0, username: 1
+			_id: 0, username: 1
 		}
 	).limit(5);
 	
@@ -31,8 +37,11 @@ router.get('/username-search', limiter, async (req, res) => {
 		returnArray[i] = usernameSearch[i].username;
 	}
 
-	return res.json({ code: 200, usernames: returnArray });
-});
+	return res.status(200).json({
+		code: 200,
+		usernames: returnArray
+	});
 
+});
 
 module.exports = router;

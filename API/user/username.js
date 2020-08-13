@@ -1,5 +1,10 @@
+// Token
 const VerifyToken = require('../../middleware/api-verify-token');
+
+// Package
 const router = require('express').Router();
+
+// Models
 const User = require('../../models/User');
 
 router.post('/username-suggestion', VerifyToken, async (req, res) => {

@@ -1,13 +1,15 @@
 const TwitterStrategy = require('passport-twitter').Strategy;
-const User = require('../models/User');
 const passport = require('passport');
+
+// Models
+const User = require('../models/User');
 
 passport.serializeUser((user, done) => done(null, user.id));
 passport.deserializeUser((id, done) => User.findById(id, (err, user) => done(err, user)));
 
 passport.use(new TwitterStrategy({
-		consumerKey: 'rAFeGteqc75ijNG6LrmkeeeRF',
-		consumerSecret: '4se2Inx0Gbumc9c5J5TI3TJjRUQW1GwdwV7vNK4p0DRt4Pmyck',
+		consumerKey: process.env.TWITTER_CONSUMER_KEY,
+		consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
 		callbackURL: 'https://soruio.herokuapp.com/auth/twitter/redirect'
 	}, async (accessToken, refreshToken, profile, done) => {
 		

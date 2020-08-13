@@ -23,21 +23,21 @@ router.post('/follow', limiter, VerifyToken, async (req, res) => {
 	if (!userID || !mongoose.Types.ObjectId.isValid(userID)) {
 		return res.status(400).json({ 
 			code: 400,
-			message: 'User id is empty or invalid.'
+			message: 'User id empty or invalid.',
 		});
 	}
 
 	if (!type || type !== 'Follow' && type !== 'Unfollow') {
 		return res.status(400).json({ 
 			code: 400,
-			message: 'Type is empty or invalid.'
+			message: 'Type empty or invalid.',
 		});
 	}
 
 	if (userID.toString() === decodeUserID.toString()) {
 		return res.status(400).json({ 
 			code: 400,
-			message: 'You cannot follow yourself.'
+			message: 'You cannot follow yourself.',
 		});
 	}
 
@@ -46,7 +46,7 @@ router.post('/follow', limiter, VerifyToken, async (req, res) => {
 	if (!followUserCheck) {
 		return res.status(400).json({
 			code: 400,
-			message: 'The user you want to follow is not registered.'
+			message: 'The user you want to follow is not registered.',
 		});
 	}
 
@@ -55,7 +55,7 @@ router.post('/follow', limiter, VerifyToken, async (req, res) => {
 	if (!userCheck) {
 		return res.status(400).json({ 
 			code: 400,
-			message: 'User not found.'
+			message: 'User not found.',
 		});
 	}
 
@@ -106,7 +106,7 @@ router.post('/follow', limiter, VerifyToken, async (req, res) => {
 		if (followControl) {
 			return res.status(400).json({
 				code: 400,
-				message: 'You can\'t follow the same person again.' 
+				message: 'You can\'t follow the same person again.',
 			});
 		}
 
@@ -131,13 +131,13 @@ router.post('/follow', limiter, VerifyToken, async (req, res) => {
 
 			return res.status(200).json({
 				code: 200,
-				message: 'You started to follow.'
+				message: 'You started to follow.',
 			});
 		}
 
 		return res.status(400).json({ 
 			code: -1,
-			message: 'An error occurred, please try again later.'
+			message: 'An error occurred, please try again later.',
 		});
 	
 	} else if (type === 'Unfollow') {
@@ -169,19 +169,19 @@ router.post('/follow', limiter, VerifyToken, async (req, res) => {
 
 				return res.status(200).json({ 
 					code: 200,
-					message: 'You stopped following the user.'
+					message: 'You stopped following the user.',
 				});
 			}
 
 			return res.status(400).json({ 
 				code: -1,
-				message: 'An error occurred, please try again later.'
+				message: 'An error occurred, please try again later.',
 			});
 		}
 
 		return res.status(400).json({
 			code: 400,
-			message: 'You are not already following the user.'
+			message: 'You are not already following the user.',
 		});
 	}
 

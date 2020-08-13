@@ -1,4 +1,3 @@
-const apiSecretKey = require('../config/api_secret_key').apiSecretKey;
 const jwt = require('jsonwebtoken');
 
 const tokenCreate = (id, name, picture) =>
@@ -6,7 +5,7 @@ const tokenCreate = (id, name, picture) =>
 		{
 			userid: id, name, picture
 		},
-		apiSecretKey,
+		process.env.TOKEN_SECRET_KEY,
 		{
 			expiresIn: '15d' // 15 gün.
 		} 
