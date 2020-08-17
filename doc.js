@@ -182,7 +182,7 @@ fetch('http://localhost:3000/login', {
 });
 */
 
-
+/*
 fetch('http://localhost:3000/two_factor_verify?username=Mercan&code=416121', {
 	method: 'GET',
 	headers: {
@@ -198,7 +198,7 @@ fetch('http://localhost:3000/two_factor_verify?username=Mercan&code=416121', {
 	// Data içinde ki code sorgulanıcak öyle işlem yapılacak.
 	console.log(data);
 });
-
+*/
 
 /*
 fetch('http://localhost:3000/creator-delete-question', {
@@ -762,6 +762,7 @@ fetch('http://localhost:3000/user_following_list?username=Mercan', {
 	method: 'GET',
 	headers: {
 		'Content-Type': 'application/json; charset=utf-8',
+		// Token varsa giriş yapmış demektir.
 		//'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI1ZjMxZTBkMzc4NTk3ZDA4OGMwMmZkMWUiLCJuYW1lIjoixLBicmFoaW0gQ2FuIE1lcmNhbiIsInBpY3R1cmUiOiJodHRwczovL3d3dy5ib29rc2llLmNvbS9maWxlcy9wcm9maWxlcy8yMi9tci1hbm9ueW1vdXMucG5nIiwiaWF0IjoxNTk3NDkwOTc2LCJleHAiOjE1OTg3ODY5NzZ9.qSZRISEEP2lBZ-5OTxI7tLzx6NU0ejwQ2l_59qQxyUs'
 	}
 }).then(async res => {
@@ -834,3 +835,21 @@ fetch('http://localhost:3000/reset_password_change', {
 	console.log(data);
 });
 */
+
+
+fetch('http://localhost:3000/user_settings-two_factor_auth?active=false', {
+	method: 'GET',
+	headers: {
+		'Content-Type': 'application/json; charset=utf-8',
+		'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI1ZjMxZTBkMzc4NTk3ZDA4OGMwMmZkMWUiLCJuYW1lIjoixLBicmFoaW0gQ2FuIE1lcmNhbiIsInBpY3R1cmUiOiJodHRwczovL3d3dy5ib29rc2llLmNvbS9maWxlcy9wcm9maWxlcy8yMi9tci1hbm9ueW1vdXMucG5nIiwiaWF0IjoxNTk3NDkwOTc2LCJleHAiOjE1OTg3ODY5NzZ9.qSZRISEEP2lBZ-5OTxI7tLzx6NU0ejwQ2l_59qQxyUs'
+	}
+}).then(async res => {
+	if (res.status === 429) {
+		// Ekrana hata basılacak
+		return console.log(res.status, res.statusText);
+	}
+
+	const data = await res.json();
+	// Data içinde ki code sorgulanıcak öyle işlem yapılacak.
+	console.log(data);
+});

@@ -86,6 +86,9 @@ const userFollow = require('./API/user/follow');
 const userFollowerList = require('./API/user/userFollowerList');
 const resetPassword = require('./API/user/reset_password');
 
+// API USER SETTINGS
+const twoFactorAuthSettings = require('./API/userSettings/twoFactorAuth');
+
 
 // API NOTIFICATIONS
 const notification = require('./API/eventCreator/notification');
@@ -121,6 +124,9 @@ app.use('/', userBlock);
 app.use('/', userFollow);
 app.use('/', userFollowerList);
 app.use('/', resetPassword);
+
+// USER SETTINGS
+app.use('/', twoFactorAuthSettings);
 
 // NOTIFICATIONS
 app.use('/', notification);
