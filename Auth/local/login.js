@@ -10,20 +10,41 @@ const bcrypt = require('bcrypt');
 const User = require('../../models/User');
 
 // User Validation
-const { UserLoginEmail, UserLoginUsername } = require('../../validation/users/user.schema');
+const { userLoginEmail, userLoginUsername } = require('../../validation/users/user.schema');
+
+// Two Factor Auth
+const sendTwoFactorCodeSMS = require('../../services/twoFactorSMS');
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 30,
+  windowMs: 30 * 60 * 1000,
+  max: 10,
   headers: false
 });
 
+function randomCodeGenerate(length) {
+	const list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+	let code = '';
+
+	for (let i = 0; i < length; i++) {
+		const random = Math.floor(Math.random() * (list.length - 1));
+		code += list[random];
+	}
+
+	return code;
+}
+
 router.post('/login', async (req, res) => {
-	
 	if (req.body.email) {
-		var validation = await UserLoginEmail.validate({ email: req.body.email, password: req.body.password });
+		var validation = await userLoginEmail.validate({
+			email: req.body.email,
+			password: req.body.password,
+		});
 	} else {
-		var validation = await UserLoginUsername.validate({ username: req.body.username, password: req.body.password });
+		var validation = await userLoginUsername.validate({
+			username: req.body.username,
+			password: req.body.password,
+		});
 	}
 
 	if (validation.error) {
@@ -38,7 +59,13 @@ router.post('/login', async (req, res) => {
 	const findQuery = email ? { email } : { username };
 
 	const user = await User.findOne(findQuery, {
-		_id: 1, name: 1, picture: 1, password: 1
+		_id: 1,
+		name: 1,
+		picture: 1,
+		password: 1,
+		username: 1,
+		phone_number: 1,
+		'settings.twoFactorAuth': 1,
 	});
 	
 	if (!user) {
@@ -50,11 +77,46 @@ router.post('/login', async (req, res) => {
 
 	const userPasswordControl = await bcrypt.compare(password, user.password);
 
-	if (!userPasswordControl) { // Şifre yanlış.
+	// Şifre yanlış.
+	if (!userPasswordControl) {
 		return res.status(400).json({
 			code: 400,
 			message: 'Password is incorrect.'
 		});
+	}
+
+	/*
+		Eğer şifre doğruysa ama kullanıcı Two Factor Doğrulamayı açmış ise
+		ilk olarak code oluşturup sms olarak kodu kullanıcının telefona gönderip
+		/two_factor_verify apisi ile kodu doğrulamasını isteyeceğiz eğer kodu doğru
+		şekilde girerse tokeni geri döndürüp hesaba giriş yaptıracağız.
+	*/
+	
+	// Şifre doğru.
+	if (user.settings.twoFactorAuth) {
+		const today = new Date();
+		const twoFactorCode = randomCodeGenerate(6);
+		const sendSms = await sendTwoFactorCodeSMS(user.phone_number, twoFactorCode);
+		today.setHours(today.getHours() + 1);
+		
+		if (sendSms) {
+			await User.updateOne({ username: user.username }, {
+				'account.two_factor_code': twoFactorCode,
+				'account.two_factor_code_date': today,
+			});
+
+			return res.status(200).json({
+				code: 200,
+				message: 'Confirmation code sent.'
+			});
+
+		} else {
+			return res.status(500).json({
+				code: 500,
+				message: 'The system is temporarily unavailable, please try again later.'
+			});
+		}
+		
 	}
 
 	return res.status(200).json({

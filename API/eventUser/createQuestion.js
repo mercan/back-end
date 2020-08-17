@@ -43,7 +43,6 @@ const createQuestion = async (eventCode, user, ipAddress, question) => {
 				}
 			}
 		});
-
 	} else {
 		create = await Event.updateOne({ eventCode }, {
 			$push: { 
@@ -72,17 +71,12 @@ router.post('/create-question-user', limiter, VerifyToken, async (req, res) => {
 
 	const { eventCode, question } = validation.value;
 
-	const event = await Event.findOne(
-		{ 
-			eventCode: eventCode, deleteEvent: false 
-		},
-		{
-			totalQuestion: 1, features: 1, bannedUserID: 1	
-		}
-	);
+	const event = await Event.findOne({ eventCode, deleteEvent: false }, {
+		totalQuestion: 1, features: 1, bannedUserID: 1
+	});
 	
 	if (!event) {
-		return res.status(400).json({code: 400, message: 'Event not found.' });
+		return res.status(400).json({ code: 400, message: 'Event not found.' });
 	}
 
 	if (!event.features.question) {
@@ -92,8 +86,7 @@ router.post('/create-question-user', limiter, VerifyToken, async (req, res) => {
 		});
 	}
 
-	if (
-		event.features.totalQuestionLimit !== -1 &&
+	if (event.features.totalQuestionLimit !== -1 &&
 		event.features.totalQuestionLimit <= event.totalQuestion
 	) {
 		return res.status(400).json({
@@ -111,11 +104,13 @@ router.post('/create-question-user', limiter, VerifyToken, async (req, res) => {
 		});
 	}
 
-	const banControl = 
-		event.bannedUserID.some(user => user.userID == req.decode.userid);
-
+	const banControl = event.bannedUserID.some(user => user.userID == req.decode.userid);
+		
 	if (banControl) {
-		return res.status(400).json({ code: -990 });
+		return res.status(400).json({
+			code: 400,
+			message: 'You cannot ask questions because you are banned from the event.',
+		});
 	}
 
 	if (await createQuestion(eventCode, user, false, question)) {
@@ -138,15 +133,12 @@ router.post('/create-question-anonymous', limiter, async (req, res) => {
 
 	const { eventCode, question } = validation.value;
 
-	const event = await Event.findOne(
-		{ 
-			eventCode, deleteEvent: false 
-		}, 
-		'totalQuestion features bannedUserIP'
-	);
+	const event = await Event.findOne({ eventCode, deleteEvent: false }, {
+		totalQuestion: 1, features:1, bannedUserIP: 1
+	});
 
 	const ipAddress = req.headers['x-forwarded-for'] ||
-		req.connection.remoteAddress;
+	req.connection.remoteAddress;
 
 	if (!event) {
 		return res.status(400).json({code: 400, message: 'Event not found.' });
@@ -166,8 +158,7 @@ router.post('/create-question-anonymous', limiter, async (req, res) => {
 		});
 	}
 	
-	if (
-		event.features.totalQuestionLimit !== -1 &&
+	if (event.features.totalQuestionLimit !== -1 &&
 		event.features.totalQuestionLimit <= event.totalQuestion
 	) {
 		return res.status(400).json({

@@ -8,6 +8,8 @@ const newUser = new Schema({
 	username: { type: String, maxlength: 40, minlength: 3 },
 	name: 		{ type: String, maxlength: 40, minlength: 6 },
 	email: 		{ type: String, maxlength: 60, minlength: 14 },
+	phone_number: { type: String, maxlength: 11, minlength: 11 },
+
 	password: { type: String, maxlength: 80, minlength: 7 },
 	gender: 	{ type: String, maxlength: 6, minlength: 4 },
 	birthday: Date,
@@ -27,6 +29,13 @@ const newUser = new Schema({
 	account: {
 		reset_password_code: { type: String, maxlength: 6, minlength: 6 },
 		reset_password_code_date: { type: Date },
+
+		two_factor_code: { type: String, maxlength: 6, minlength: 6 },
+		two_factor_code_date: { type: Date },
+	},
+
+	settings: {
+		twoFactorAuth: { type: Boolean, default: false }
 	},
 
 	socialMediaAccounts: {

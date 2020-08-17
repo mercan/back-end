@@ -45,16 +45,17 @@ app.use(passport.session());
 const login  = require('./Auth/local/login');
 const logout = require('./Auth/local/logout');
 const signup = require('./Auth/local/signup');
+const twoFactorAuth = require('./API/user/two_factor_auth');
 
 app.use('/auth', require('./Auth/passport/github'));
 app.use('/auth', require('./Auth/passport/google'));
 app.use('/auth', require('./Auth/passport/twitter'));
 app.use('/auth', require('./Auth/passport/facebook'));
 
-app.use('/', signup);
 app.use('/', login);
 app.use('/', logout);
-
+app.use('/', signup);
+app.use('/', twoFactorAuth);
 
 // API EVENT GET
 const eventSearch = require('./API/eventUser/eventSearch');
@@ -84,6 +85,7 @@ const userBlock = require('./API/user/userBlock');
 const userFollow = require('./API/user/follow');
 const userFollowerList = require('./API/user/userFollowerList');
 const resetPassword = require('./API/user/reset_password');
+
 
 // API NOTIFICATIONS
 const notification = require('./API/eventCreator/notification');

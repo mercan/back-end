@@ -16,7 +16,7 @@ const limiter = rateLimit({
   headers: false
 });
 
-const eventJoinEvent = async eventCode => {
+const addJoinEvent = async eventCode => {
 	const joinEventUpdate = await Event.updateOne({ eventCode }, {
 		$inc: {
 			totalJoinEvent: 1
@@ -64,7 +64,7 @@ router.post('/add_join_event', limiter, VerifyToken, async (req, res) => {
 
 
 		if (newJoinEvent) {
-			return eventJoinEvent(eventCode) ? res.json({ code: 200 }) : 
+			return addJoinEvent(eventCode) ? res.json({ code: 200 }) : 
 			res.status(304).json({ code: 304 });
 		}
 
@@ -90,7 +90,7 @@ router.post('/add_join_event', limiter, VerifyToken, async (req, res) => {
 	});
 
 	if (joinEvent.nModified) {
-		return eventJoinEvent(eventCode) ? res.json({ code: 200 }) : 
+		return addJoinEvent(eventCode) ? res.json({ code: 200 }) : 
 		res.status(304).json({ code: 304 });
 	}
 

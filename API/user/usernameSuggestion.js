@@ -14,9 +14,9 @@ router.post('/username-suggestion', limiter, VerifyToken, async (req, res) => {
 	const randomLength = Math.floor(Math.random() * 10) + 1;
 
 	const randomUsernameArray = [];
-	let randomUsername, check;
+	let randomUsername;
 
-	while (!check) {
+	while (true) {
 		for (let i = 0; i < randomLength; i++) {
 			const randomNumber = String(Math.floor(Math.random() * 9));
 
@@ -34,7 +34,7 @@ router.post('/username-suggestion', limiter, VerifyToken, async (req, res) => {
 		}
 
 		if (randomUsernameArray.length === 5) {
-			check = true;
+			break;
 		}
 	}
 

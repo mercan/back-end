@@ -1,6 +1,7 @@
+// Package
 const rateLimit = require('express-rate-limit');
 const router = require('express').Router();
-const fetch = require('node-fetch');
+const fetch  = require('node-fetch');
 const bcrypt = require('bcrypt');
 
 // Models
@@ -18,22 +19,22 @@ const limiter = rateLimit({
 	headers: false
 });
 
-const resetPasswordCodeCreate = number => {
-	const RandomArray = [
+const resetPasswordCodeCreate = length => {
+	const list = [
 		0, 'A', 1,  'B', 'C', 3, 'D', 4, 'J', 5, 6, 'K', 7, 8, 9, 'Q', 'W', 'E', 2, 
 	 'R', 3, 'T', 'Y', 8, 4, 5, 6, 'U', 'I', 'O', 'P', 8 , 9, 'A', 'S', 'D', 4, 4,
 	  9, 'F', 'G', 'H', 'J', 'K', 'L', 0, 'Z', 'X', 'C', 9, 5, 'V', 'B', 0, 'N', 6,
 	  'M', 4, 6, 'M', 'D', 'E', 'I', 'J', 'K', 'L', 'U', 3, 6, 3, 2,'T', 'E', 'I',8
 	];
 
-	let randomCode = '';
+	let code = '';
 
-	for (let i = 0; i < number; i++) {
-		const random = Math.floor(Math.random() * (RandomArray.length - 1));
-		randomCode += RandomArray[random];
+	for (let i = 0; i < length; i++) {
+		const random = Math.floor(Math.random() * (list.length - 1));
+		code += list[random];
 	}
 
-	return randomCode;
+	return code;
 };
 
 router.get('/reset_password', limiter, async (req, res) => {
@@ -161,7 +162,7 @@ router.get('/reset_password_verify', limiter, async (req, res) => {
 	
 	const query = email ? { email } : { username };
 
-	const user = await User.findOne(query).select({
+	const user = await User.findOne(query, {
 		connect: 1,
 		'account.reset_password_code': 1,
 		'account.reset_password_code_date': 1,
@@ -197,7 +198,7 @@ router.get('/reset_password_verify', limiter, async (req, res) => {
 
 	return res.status(400).json({
 		code: 400,
-		message: 'Invalid Code.',
+		message: 'Invalid code.',
 	});
 
 });

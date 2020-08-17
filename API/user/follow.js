@@ -89,10 +89,7 @@ router.post('/follow', limiter, VerifyToken, async (req, res) => {
 			}
 		};
 
-		console.log(updateQuery);
-
 		const update = await Follow.updateOne({ userID }, updateQuery);
-
 		return update.nModified ? true : false;
 	}
 
