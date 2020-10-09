@@ -30,8 +30,8 @@ async function userControlAndReturnData(res, _id, requestData = '_id') {
 	return user;
 }
 
-// http://localhost:3000/user_settings-two_factor_auth?active=(false || true)
-router.get('/user_settings-two_factor_auth', VerifyToken, limiter, async (req, res) => {
+// http://localhost:3000/user_settings/two_factor_auth?active=(false || true)
+router.get('/user_settings/two_factor_auth', VerifyToken, limiter, async (req, res) => {
 	const validation = await isTwoFactorAuth.validate(req.query);
 	
 	if (validation.error) {

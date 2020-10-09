@@ -8,7 +8,7 @@ const newUser = new Schema({
 	username: { type: String, maxlength: 40, minlength: 3 },
 	name: 		{ type: String, maxlength: 40, minlength: 6 },
 	email: 		{ type: String, maxlength: 60, minlength: 14 },
-	phone_number: { type: String, maxlength: 11, minlength: 11 },
+	phone_number: { type: String, maxlength: 12, minlength: 12 },
 
 	password: { type: String, maxlength: 80, minlength: 7 },
 	gender: 	{ type: String, maxlength: 6, minlength: 4 },

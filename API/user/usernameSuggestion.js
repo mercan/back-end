@@ -46,5 +46,4 @@ router.post('/username-suggestion', limiter, VerifyToken, async (req, res) => {
 	return res.json({ code: 200, suggestion: randomUsernameArray });
 });
 
-
 module.exports = router;

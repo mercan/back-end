@@ -95,5 +95,4 @@ const newEvent = new Schema({
 }, { versionKey: false });
 
 const Event = mongoose.model('event', newEvent);
-
 module.exports = Event;

@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
 	if (!token) {
 		return res.status(400).json({
 			code: 400,
-			message: 'Token cannot be empty'
+			message: 'Token cannot be empty.'
 		});
 	}
 

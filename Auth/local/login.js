@@ -34,7 +34,7 @@ function randomCodeGenerate(length) {
 	return code;
 }
 
-router.post('/login', async (req, res) => {
+router.post('/login', limiter, async (req, res) => {
 	if (req.body.email) {
 		var validation = await userLoginEmail.validate({
 			email: req.body.email,

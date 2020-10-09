@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 const corsOptions = {
-  origin: 'https://deneme.deneme',
+  origin: 'https://degisecek.degisecek',
 }
 
 app.use(cors(corsOptions));
@@ -34,7 +34,7 @@ app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(cookieSession({
   maxAge: 30 * 24 * 3600 * 1000,
-  keys:['ekyjekljrkqklehqklejqeqwjlklte']
+  keys:['Deneme']
 }));
 
 // Passport
@@ -130,6 +130,5 @@ app.use('/', twoFactorAuthSettings);
 
 // NOTIFICATIONS
 app.use('/', notification);
-
 
 app.listen(process.env.PORT || 3000, () => console.log('Başlatıldı'));

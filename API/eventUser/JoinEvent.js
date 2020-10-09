@@ -22,7 +22,7 @@ const addJoinEvent = async eventCode => {
 			totalJoinEvent: 1
 		}
 	});
-
+	
 	return joinEventUpdate.nModified ? true : false;
 }
 
@@ -64,8 +64,9 @@ router.post('/add_join_event', limiter, VerifyToken, async (req, res) => {
 
 
 		if (newJoinEvent) {
-			return addJoinEvent(eventCode) ? res.json({ code: 200 }) : 
-			res.status(304).json({ code: 304 });
+			if (addJoinEvent(eventCode)) {
+				return res.status(200).json({ code: 200 });
+			}
 		}
 
 		return res.status(304).json({ code: 304 });
@@ -90,8 +91,9 @@ router.post('/add_join_event', limiter, VerifyToken, async (req, res) => {
 	});
 
 	if (joinEvent.nModified) {
-		return addJoinEvent(eventCode) ? res.json({ code: 200 }) : 
-		res.status(304).json({ code: 304 });
+		if (addJoinEvent(eventCode)) {
+			return res.status(200).json({ code: 200 });
+		}
 	}
 
 	res.status(304).json({ code: 304 });

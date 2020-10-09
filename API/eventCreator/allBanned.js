@@ -96,7 +96,7 @@ router.post('/all-banned-add', VerifyToken, async (req, res) => {
 	if (!question) {
 		return res.status(400).json({
 			code: 400,
-			message: 'User not found.'
+			message: 'User not found.',
 		});
 	}
 
@@ -123,9 +123,9 @@ router.post('/all-banned-add', VerifyToken, async (req, res) => {
 				});
 			}
 
-			return res.status(400).json({
+			return res.status(500).json({
 				code: -1,
-				message: 'Something went wrong.'
+				message: 'Something went wrong.',
 			});
 		}
 
@@ -133,16 +133,8 @@ router.post('/all-banned-add', VerifyToken, async (req, res) => {
 
 	return res.status(400).json({
 		code: 400,
-		message: 'User has been banned before.'
+		message: 'User has been banned before.',
 	});
 });
-
-
-
-
-
-
-
-
 
 module.exports = router;
